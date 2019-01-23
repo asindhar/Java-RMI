@@ -5,58 +5,57 @@ import java.rmi.*;
 import java.lang.*;
 import java.io.*;
 import java.util.*;
-import java.time.*;
+import java.text.*;
 
 public class clockClient {
     public static void main(String args[]) {
         try {
             // start timer before sending request
-            long startTimer = java.time.Instant.now().getEpochSecond();
-
-
+            long startTimer = new Date().getTime();
 
             // lookup method to find reference of remote object
-            Instant serverTime = ((clockInterface) Naming.lookup("rmi://localhost:1900/cmpt431")).getServerTime();
+            Date serverTime = ((clockInterface) Naming.lookup("rmi://localhost:1900/cmpt431")).getServerTime();
 
             // end timer after getting the response
-            long endTimer = java.time.Instant.now().getEpochSecond();
-
-
+            long endTimer = new Date().getTime();
 
             // compute RTT in ms
             long rtt = endTimer - startTimer;
 
             // compute client's time i.e. tc = ts + dsc
-            long clientTime = serverTime.getEpochSecond() + (rtt/2);
-             System.out.println("Client time without rtt: " + serverTime.getEpochSecond());
-             System.out.println("rtt: " + rtt);
-             System.out.println("rtt/2: " + rtt/2);
-             System.out.println("Client time with rtt: " + clientTime);
+            long clientTime = serverTime.getTime() + (rtt / 2);
+            System.out.println("Client time without rtt: " + serverTime.getTime() + " ms");
+            System.out.println("rtt: " + rtt + " ms");
+            System.out.println("rtt/2: " + rtt / 2 + " ms");
+            System.out.println("Client time with rtt: " + clientTime + " ms");
+
+            // format time to month:day:hour:min:year.sec
+            DateFormat timeFormat = new SimpleDateFormat("MMDDHHmmyy.ss");
+            String formatedTime = timeFormat.format(new Date(clientTime));
+
             // set client time
 
-            // creating list of commands  
+            // creating list of commands
             List<String> commands = new ArrayList<String>();
-            //commands.add(String.format("date -r %s", clientTime)); // command 
+            commands.add("sudo");
             commands.add("date");
-            commands.add("-r");
-            commands.add(""+clientTime);
+            commands.add("" + formatedTime);
 
-            // creating the process 
-            ProcessBuilder pb = new ProcessBuilder(commands); 
-            
-            // starting the process 
-            Process process = pb.start(); 
-            
-            // for reading the ouput from stream 
-            BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream())); 
-            String s = null; 
-            while ((s = stdInput.readLine()) != null) 
-            { 
-                System.out.println(s); 
-            } 
+            // // creating the process
+            ProcessBuilder pb = new ProcessBuilder(commands);
 
-            System.out.println("Server time: " + serverTime.getEpochSecond());
-        } catch(Exception e) {
+            // // starting the process
+            Process process = pb.start();
+
+            System.out.println("Server time " + serverTime);
+
+            // // for reading the ouput from stream
+            BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String s = null;
+            while ((s = stdInput.readLine()) != null) {
+                System.out.println("\nClient's time synced with server: " + s);
+            }
+        } catch (Exception e) {
             System.out.println("Client exception: " + e.toString());
         }
     }
