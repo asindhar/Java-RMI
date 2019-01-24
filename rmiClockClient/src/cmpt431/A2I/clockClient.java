@@ -13,7 +13,7 @@ public class clockClient {
             // start timer before sending request
             long startTimer = new Date().getTime();
 
-            // lookup method to find reference of remote object
+            // lookup method to find reference of remote object and get server date
             Date serverTime = ((clockInterface) Naming.lookup("rmi://localhost:1900/cmpt431")).getServerTime();
 
             // end timer after getting the response
@@ -41,19 +41,20 @@ public class clockClient {
             commands.add("date");
             commands.add("" + formatedTime);
 
-            // // creating the process
+            // creating the process
             ProcessBuilder pb = new ProcessBuilder(commands);
 
-            // // starting the process
+            // starting the process
             Process process = pb.start();
 
+            System.out.println("\n");
             System.out.println("Server time " + serverTime);
 
-            // // for reading the ouput from stream
+            // for reading the ouput from stream
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String s = null;
             while ((s = stdInput.readLine()) != null) {
-                System.out.println("\nClient's time synced with server: " + s);
+                System.out.println("Client time (synced with server): " + s);
             }
         } catch (Exception e) {
             System.out.println("Client exception: " + e.toString());

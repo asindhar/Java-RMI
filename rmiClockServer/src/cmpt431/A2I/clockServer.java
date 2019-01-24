@@ -14,12 +14,11 @@ public class clockServer {
             LocateRegistry.createRegistry(1900);
 
             // Binds the remote object by the name cmpt431
-            Naming.rebind("rmi://localhost:1900/cmpt431",obj);
+            Naming.rebind("rmi://localhost:1900/cmpt431", obj);
 
-            System.out.println("Listening on port 1900..");
-        } catch(Exception e) {
+            System.out.println("Server is listening on port 1900..");
+        } catch (Exception e) {
             System.out.println("Server exception: " + e.toString());
         }
     }
 }
-
