@@ -2,7 +2,7 @@
 
 ## Setup:
 
-A very basic one-way Client and Server setup where a Client requests server time and the server sends a `Date` object to the client. Client uses this `Date` object to extract time by invoking `getTime()` method on this `Date` object. After computing RTT client sets its system time to server time plus the half of RTT.
+A very basic two-way Client and Server setup where a Client requests server time and the server sends a `Date` object to the client. Client uses this `Date` object to extract time by invoking `getTime()` method on this `Date` object. After computing RTT client sets its system time to server time plus the half of RTT.
 
 ## Computing RTT:
 
