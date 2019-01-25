@@ -10,4 +10,4 @@ We start a timer using java `Date` object on the client side and stop this timer
 
 ## Setting client time:
 
-To set the client time we used a java class `ProcessBuilder` to create an operating system process. This process runs a bash command on the client i.e. `sudo date ${CLIENT_NEW_TIME}`.
+To set the client time we used a java class `ProcessBuilder` to create an operating system process. This process runs a bash command on the client i.e. `sudo date ${CLIENT_NEW_TIME}`. _NOTE: This command will only work for unix based OS on both server and client side_.
