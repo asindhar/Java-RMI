@@ -1,4 +1,4 @@
-# cmpt431 Assignment 1
+# JAVA RMI
 
 ## Summary:
 
